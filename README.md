@@ -1,73 +1,66 @@
-# crossref-search
+# Crossref Metadata Search (Vue + TypeScript)
 
-This template should help get you started developing with Vue 3 in Vite.
+A search application for exploring the Crossref REST API with search query, facet filtering (type + year), sorting, and pagination. Built for the Crossref take‑home assignment.
 
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Local Setup
 
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+## Run the Dev Server
 
 ```sh
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Run Unit Tests
 
 ```sh
 pnpm test:unit
 ```
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+## Run E2E Tests (Playwright)
 
 ```sh
-# Install browsers for the first run
+# Install browsers the first time
 npx playwright install
 
-# When testing on CI, must build the project first
-pnpm build
-
-# Runs the end-to-end tests
+# Run all e2e tests
 pnpm test:e2e
-# Runs the tests only on Chromium
-pnpm test:e2e --project=chromium
-# Runs the tests of a specific file
-pnpm test:e2e tests/example.spec.ts
-# Runs the tests in debug mode
-pnpm test:e2e --debug
+
+# View the test report
+pnpm exec playwright show-report
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Notes on Implementation
 
-```sh
-pnpm lint
-```
+### Facet UX Tradeoff
+
+The Crossref API returns a reduced facet list when filters are applied (e.g., selecting `Book` returns only that facet). Replacing the entire facet list in the UI causes a jarring experience, because users lose access to other facets without clearing filters.
+
+To improve UX:
+
+- The app **keeps the full facet list** from the last unfiltered query.
+- When filters are applied, it **updates counts only for the selected facets**, leaving the rest visible.
+- If the **query changes**, facets are **fully replaced** to avoid stale facet lists across searches.
+
+This preserves a stable facet UI while still reflecting the filtered response where it matters most.
+
+### Deep Linking
+
+Search, sort, pagination, and filters sync to the URL using `useRouteQuery`, enabling shareable URLs and refresh persistence.
+
+### Request Cancellation
+
+Requests are cancellable via `AbortController` and cancel errors are ignored, preventing noisy error states.
+
+### HTML Sanitization
+
+Abstracts are rendered using `v-html` but sanitized with DOMPurify before injection to prevent XSS.
+
+## Architecture Highlights
+
+- Centralized query/filter state lives in a Pinia store.
+- Facet selection is derived from the `filters` query string for consistency.
+- API access is isolated in `services/api.ts` for easier mocking and testing.

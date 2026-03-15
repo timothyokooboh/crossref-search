@@ -35,7 +35,7 @@
               </Label>
             </div>
 
-            <span v-if="title === 'Publication Type'">{{ value }}</span>
+            <span v-if="title === 'Publication Type'">{{ formatCount(value) }}</span>
           </li>
         </ul>
       </CollapsibleContent>
@@ -52,6 +52,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSearchStore } from '@/store/useSearchStore'
+import { formatCount } from '@/lib/utils'
 
 const props = defineProps<{
   title: 'Publication Type' | 'Publication Year'

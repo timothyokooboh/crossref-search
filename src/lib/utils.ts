@@ -7,6 +7,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function formatCount(value: number | null | undefined, locale = 'en-US') {
+  if (value === null || value === undefined) return ''
+  return new Intl.NumberFormat(locale).format(value)
+}
+
 export function isCanceledError(err: unknown): err is { name?: string; code?: string } {
   return !!err && typeof err === 'object'
 }

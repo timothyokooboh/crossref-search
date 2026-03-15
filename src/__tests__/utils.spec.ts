@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { formatDateParts, parseFiltersString } from '@/lib/utils'
+import {
+  formatCount,
+  formatDateParts,
+  parseFiltersString,
+  replaceHyphensWithSpaces,
+} from '@/lib/utils'
 
 describe('utils', () => {
   it('parses filter strings into pub types and years', () => {
@@ -17,5 +22,17 @@ describe('utils', () => {
 
   it('returns year when month/day are missing', () => {
     expect(formatDateParts([1991, 0, 0] as [number, number, number])).toBe(1991)
+  })
+
+  it('formats counts with locale separators', () => {
+    expect(formatCount(430926)).toBe('430,926')
+  })
+
+  it('returns empty string for undefined counts', () => {
+    expect(formatCount(undefined)).toBe('')
+  })
+
+  it('replaces hyphens with spaces', () => {
+    expect(replaceHyphensWithSpaces('journal-article')).toBe('journal article')
   })
 })

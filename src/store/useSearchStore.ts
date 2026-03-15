@@ -15,8 +15,6 @@ export const useSearchStore = defineStore('search', () => {
   const filters = useRouteQuery<string>('filters', '')
   const results = ref<Results | null>(null)
   const formattedFacets = ref<Facet[]>([])
-  // Track the query that last produced a full facet list to avoid stale facets across searches.
-  const lastFacetQuery = ref<string | null>(null)
   const DEBOUNCE_DELAY = 1200
   const ROWS = 10
 
@@ -26,45 +24,9 @@ export const useSearchStore = defineStore('search', () => {
 
   const selectedPublicationYears = computed(() => parseFiltersString(filters.value).pubYears)
 
-  const hasSelectedFacets = computed(() => {
-    return selectedPublicationTypes.value.length > 0 || selectedPublicationYears.value.length > 0
-  })
-
-  const shouldReplaceFacets = computed(() => {
-    return (
-      !formattedFacets.value.length ||
-      !results.value ||
-      !hasSelectedFacets.value ||
-      lastFacetQuery.value !== searchQuery.value
-    )
-  })
-
   const resetResults = () => {
     results.value = null
     formattedFacets.value = []
-  }
-
-  // When filters are active, only update counts for selected facets to preserve the full list.
-  const updateSelectedFacetCounts = (
-    facetIndex: number,
-    selectedKeys: string[],
-    responseValues: Record<string, number> | undefined,
-  ) => {
-    if (!formattedFacets.value[facetIndex]) return
-
-    const currentFacet = formattedFacets.value[facetIndex]
-    const updatedItems = { ...currentFacet.items }
-
-    for (const key of selectedKeys) {
-      updatedItems[key] = responseValues?.[key] ?? 0
-    }
-
-    const nextFacets = [...formattedFacets.value]
-    nextFacets[facetIndex] = {
-      ...currentFacet,
-      items: updatedItems,
-    }
-    formattedFacets.value = nextFacets
   }
 
   // helper to update filters from arrays
@@ -138,13 +100,7 @@ export const useSearchStore = defineStore('search', () => {
           items: facets.published?.values,
         }
 
-        if (shouldReplaceFacets.value) {
-          formattedFacets.value = [pubTypesFacets, pubYearsFacets]
-          lastFacetQuery.value = searchQuery.value
-        } else {
-          updateSelectedFacetCounts(0, selectedPublicationTypes.value, facets['type-name']?.values)
-          updateSelectedFacetCounts(1, selectedPublicationYears.value, facets.published?.values)
-        }
+        formattedFacets.value = [pubTypesFacets, pubYearsFacets]
 
         results.value = {
           total: data.message['total-results'],

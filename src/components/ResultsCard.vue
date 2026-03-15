@@ -17,39 +17,41 @@
       {{ result.title }}
     </h2>
 
-    <section v-if="result.publisher" class="flex flex-col gap-1">
-      <h2 class="flex gap-2 items-center">
-        <BookOpenCheck class="text-[#64748B] size-4" role="presentation" />
-        <span class="text-[#0F172A] font-semibold text-sm">Publisher</span>
-      </h2>
+    <dl class="flex flex-col gap-3">
+      <div v-if="result.publisher" class="flex flex-col gap-1">
+        <dt class="flex gap-2 items-center">
+          <BookOpenCheck class="text-[#64748B] size-4" role="presentation" />
+          <span class="text-[#0F172A] font-semibold text-sm">Publisher</span>
+        </dt>
 
-      <p class="text-sm text-[#334155] font-medium">
-        {{ result.publisher }}
-      </p>
-    </section>
-
-    <section v-if="result.authors" class="flex flex-col gap-1">
-      <h2 class="flex items-center gap-2">
-        <Users class="text-[#64748B] size-4" role="presentation" />
-        <span class="text-[#0F172A] font-semibold text-sm">Authors</span>
-      </h2>
-
-      <div class="flex flex-wrap gap-2 text-[13px]">
-        <span v-for="(author, index) in result.authors" :key="index" class="text-[#475569]">
-          <span v-if="author.name">{{ author.name }}</span>
-          <span v-else>{{ author.given }} {{ author.family }}</span>
-          <span v-if="index !== result.authors.length - 1" class="pl-2">|</span>
-        </span>
+        <dd class="text-sm text-[#334155] font-medium">
+          {{ result.publisher }}
+        </dd>
       </div>
-    </section>
 
-    <section v-if="result.abstract" class="flex flex-col gap-1">
-      <h2 class="flex items-center gap-2">
-        <NotebookText class="text-[#64748B] size-4" role="presentation" />
-        <span class="#0F172A font-semibold text-sm">Abstract</span>
-      </h2>
-      <p v-html="sanitizedAbstract" class="text-sm text-[#475569] leading-7" />
-    </section>
+      <div v-if="result.authors" class="flex flex-col gap-1">
+        <dt class="flex items-center gap-2">
+          <Users class="text-[#64748B] size-4" role="presentation" />
+          <span class="text-[#0F172A] font-semibold text-sm">Authors</span>
+        </dt>
+
+        <dd class="flex flex-wrap gap-2 text-[13px]">
+          <span v-for="(author, index) in result.authors" :key="index" class="text-[#475569]">
+            <span v-if="author.name">{{ author.name }}</span>
+            <span v-else>{{ author.given }} {{ author.family }}</span>
+            <span v-if="index !== result.authors.length - 1" class="pl-2">|</span>
+          </span>
+        </dd>
+      </div>
+
+      <div v-if="result.abstract" class="flex flex-col gap-1">
+        <dt class="flex items-center gap-2">
+          <NotebookText class="text-[#64748B] size-4" role="presentation" />
+          <span class="#0F172A font-semibold text-sm">Abstract</span>
+        </dt>
+        <dd v-html="sanitizedAbstract" class="text-sm text-[#475569] leading-7" />
+      </div>
+    </dl>
 
     <section class="flex flex-col flex-wrap sm:flex-row sm:items-center gap-2">
       <a

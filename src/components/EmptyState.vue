@@ -2,7 +2,7 @@
   <section
     class="flex flex-col items-center justify-center w-full max-w-md mx-auto h-[75vh] text-center"
   >
-    <img src="/empty-state.svg" alt="empty state" />
+    <img src="/empty-state.svg" alt="Search illustration" />
     <h2 class="text-3xl font-bold leading-9 mb-2">
       <span v-if="showNoResults">No results found</span>
       <span v-else>Start Your Search</span>

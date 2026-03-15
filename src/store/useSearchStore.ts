@@ -1,6 +1,6 @@
 import { parseFiltersString, isCanceledError } from '@/lib/utils'
 import { searchWorks } from '@/services/api'
-import type { Facet, Item, Results, SearchParams } from '@/types'
+import type { Facet, Results, SearchParams } from '@/types'
 import { defineStore } from 'pinia'
 import { computed, ref, watch, onWatcherCleanup } from 'vue'
 import { debounce } from 'lodash-es'
@@ -139,7 +139,7 @@ export const useSearchStore = defineStore('search', () => {
         results.value = {
           total: data.message['total-results'],
           facets: formattedFacets.value,
-          items: items.map((item: Item) => ({
+          items: items.map((item) => ({
             url: item.URL,
             title: item.title?.[0] ?? item['container-title']?.[0],
             published: item.published?.['date-parts'][0],

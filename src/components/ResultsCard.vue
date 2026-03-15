@@ -56,9 +56,9 @@
         :href="result.url"
         target="_blank"
         rel="noreferrer"
-        class="flex items-center gap-2 w-fit py-1 px-2 font-bold rounded bg-[#005999]/10 text-[#005999]"
+        class="flex items-center gap-2 w-fit py-1 px-2 font-bold rounded bg-[#005999]/10 text-[#005999] hover:underline hover:decoration-dashed decoration-current"
       >
-        <Link2 class="size-4" />
+        <ExternalLink class="size-4" />
         <span class="break-all">{{ result.url }}</span>
       </a>
 
@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import { BookOpenCheck, Link2, Share2, Users, NotebookText } from 'lucide-vue-next'
+import { BookOpenCheck, ExternalLink, Share2, Users, NotebookText } from 'lucide-vue-next'
 import { useShare } from '@vueuse/core'
 import { formatDateParts } from '@/lib/utils'
 import type { ResultItem } from '@/types'

@@ -4,7 +4,7 @@
     <Input
       aria-label="Search title, author, DOIs, ORCIDs"
       placeholder="Search title, author, DOIs, ORCIDs..."
-      class="flex-1 pl-9 text-sm border-0 bg-[#F1F5F9] text-[#6B7280]"
+      class="flex-1 pl-9 text-sm border-0 bg-[#F1F5F9]"
       v-model="searchQuery"
     />
   </div>

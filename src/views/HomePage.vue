@@ -6,6 +6,7 @@
       <LoadingState v-if="loading" />
       <EmptyState v-else />
     </div>
+
     <div v-else class="grid md:grid-cols-[320px_1fr] gap-4">
       <FiltersSidebar />
       <ResultsSection />

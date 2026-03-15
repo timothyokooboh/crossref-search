@@ -8,7 +8,11 @@ import { useSearchStore } from '@/store/useSearchStore'
 const queryState = new Map<string, ReturnType<typeof ref>>()
 
 vi.mock('@vueuse/router', () => ({
-  useRouteQuery: (key: string, defaultValue: unknown, options?: { transform?: (v: unknown) => unknown }) => {
+  useRouteQuery: (
+    key: string,
+    defaultValue: unknown,
+    options?: { transform?: (v: unknown) => unknown },
+  ) => {
     if (!queryState.has(key)) {
       const initial = options?.transform ? options.transform(defaultValue) : defaultValue
       queryState.set(key, ref(initial))
@@ -66,7 +70,7 @@ describe('FiltersList', () => {
         { groupTitle: 'Publication Year', items: { 2020: 4 } },
       ],
       items: [],
-    } as any
+    }
 
     const wrapper = mount(FiltersList, {
       global: {
@@ -82,7 +86,7 @@ describe('FiltersList', () => {
 
     const cards = wrapper.findAll('.filters-card')
     expect(cards).toHaveLength(2)
-    expect(cards[0].text()).toContain('Publication Type')
-    expect(cards[1].text()).toContain('Publication Year')
+    expect(cards[0]?.text()).toContain('Publication Type')
+    expect(cards[1]?.text()).toContain('Publication Year')
   })
 })

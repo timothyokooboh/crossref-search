@@ -12,7 +12,7 @@ vi.mock('@vueuse/core', () => ({
 
 vi.mock('lucide-vue-next', () => ({
   BookOpenCheck: defineComponent({ template: '<svg />' }),
-  Link2: defineComponent({ template: '<svg />' }),
+  ExternalLink: defineComponent({ template: '<svg />' }),
   Share2: defineComponent({ template: '<svg />' }),
   Users: defineComponent({ template: '<svg />' }),
   NotebookText: defineComponent({ template: '<svg />' }),

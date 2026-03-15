@@ -84,4 +84,35 @@ describe('FiltersCard', () => {
     expect(setFiltersSpy).toHaveBeenCalled()
     expect(store.filters).toBe('type-name:Book')
   })
+
+  it('updates filters when selecting a publication year', async () => {
+    const pinia = createPinia()
+    setActivePinia(pinia)
+    const store = useSearchStore()
+    const setFiltersSpy = vi.spyOn(store, 'setFilters')
+
+    const wrapper = mount(FiltersCard, {
+      props: {
+        title: 'Publication Year',
+        items: { 2020: 3 },
+      },
+      global: {
+        plugins: [pinia],
+        stubs: {
+          Collapsible: { template: '<div><slot /></div>' },
+          CollapsibleTrigger: { template: '<button><slot /></button>' },
+          CollapsibleContent: { template: '<div><slot /></div>' },
+          Label: { template: '<label><slot /></label>' },
+          Checkbox: {
+            template:
+              '<button data-test="checkbox" @click="$emit(\'update:model-value\', true)">check</button>',
+          },
+        },
+      },
+    })
+
+    await wrapper.find('[data-test="checkbox"]').trigger('click')
+    expect(setFiltersSpy).toHaveBeenCalled()
+    expect(store.filters).toBe('from-pub-date:2020')
+  })
 })

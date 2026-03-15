@@ -14,6 +14,8 @@ vi.mock('lucide-vue-next', () => ({
   BookOpenCheck: defineComponent({ template: '<svg />' }),
   Link2: defineComponent({ template: '<svg />' }),
   Share2: defineComponent({ template: '<svg />' }),
+  Users: defineComponent({ template: '<svg />' }),
+  NotebookText: defineComponent({ template: '<svg />' }),
 }))
 
 describe('ResultsCard', () => {
@@ -27,10 +29,7 @@ describe('ResultsCard', () => {
           publisher: 'Crossref',
           type: 'journal-article',
           abstract: 'Abstract text',
-          authors: [
-            { given: 'Ada', family: 'Lovelace' },
-            { name: 'Charles Babbage' },
-          ],
+          authors: [{ given: 'Ada', family: 'Lovelace' }, { name: 'Charles Babbage' }],
         },
       },
       global: {

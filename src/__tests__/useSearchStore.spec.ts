@@ -111,7 +111,9 @@ describe('useSearchStore', () => {
     await Promise.resolve()
 
     expect(mockedSearchWorks).toHaveBeenCalled()
-    const [params] = mockedSearchWorks.mock.calls[0]
+    const call = mockedSearchWorks.mock.calls[0]
+    expect(call).toBeDefined()
+    const params = call?.[0] as { [key: string]: unknown } | undefined
     expect(params).toMatchObject({
       'query.bibliographic': 'climate',
       filter: 'type-name:Book,from-pub-date:2019',
@@ -130,11 +132,13 @@ describe('useSearchStore', () => {
     await Promise.resolve()
 
     expect(mockedSearchWorks).toHaveBeenCalled()
-    const [params] = mockedSearchWorks.mock.calls[0]
+    const call = mockedSearchWorks.mock.calls[0]
+    expect(call).toBeDefined()
+    const params = call?.[0] as { [key: string]: unknown } | undefined
     expect(params).toMatchObject({
       'query.bibliographic': 'climate',
     })
-    expect(params.filter).toBeUndefined()
+    expect(params?.filter).toBeUndefined()
   })
 
   it('replaces facets on query change even when filters are selected', async () => {
@@ -159,7 +163,7 @@ describe('useSearchStore', () => {
     await vi.runAllTimersAsync()
     await Promise.resolve()
 
-    expect(store.formattedFacets[0].items).toEqual({ Book: 5, Chapter: 2 })
+    expect(store.formattedFacets[0]?.items).toEqual({ Book: 5, Chapter: 2 })
 
     mockedSearchWorks.mockResolvedValueOnce({
       data: {
@@ -178,8 +182,8 @@ describe('useSearchStore', () => {
     await vi.runAllTimersAsync()
     await Promise.resolve()
 
-    expect(store.formattedFacets[0].items).toEqual({ Book: 1, Dataset: 4 })
-    expect(store.formattedFacets[1].items).toEqual({ 2019: 2 })
+    expect(store.formattedFacets[0]?.items).toEqual({ Book: 1, Dataset: 4 })
+    expect(store.formattedFacets[1]?.items).toEqual({ 2019: 2 })
   })
 
   it('updates counts for selected facets without replacing others', async () => {
@@ -221,7 +225,7 @@ describe('useSearchStore', () => {
     await vi.runAllTimersAsync()
     await Promise.resolve()
 
-    expect(store.formattedFacets[0].items).toEqual({ Book: 1, Chapter: 2 })
-    expect(store.formattedFacets[1].items).toEqual({ 2020: 1, 2019: 1 })
+    expect(store.formattedFacets[0]?.items).toEqual({ Book: 1, Chapter: 2 })
+    expect(store.formattedFacets[1]?.items).toEqual({ 2020: 1, 2019: 1 })
   })
 })

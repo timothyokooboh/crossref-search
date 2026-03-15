@@ -77,7 +77,7 @@ const props = defineProps<{
 const { share, isSupported } = useShare()
 const sanitizedAbstract = computed(() => DOMPurify.sanitize(props.result.abstract ?? ''))
 
-function startShare(text: string, url: string) {
+function startShare(text: string | undefined, url: string) {
   share({
     title: 'Crossref metadata',
     text,

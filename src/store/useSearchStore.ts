@@ -10,7 +10,7 @@ import { toast } from 'vue-sonner'
 export const useSearchStore = defineStore('search', () => {
   const loading = ref(false)
   const currentPage = useRouteQuery('page', 1, { transform: Number })
-  const searchQuery = useRouteQuery('q', '')
+  const searchQuery = useRouteQuery<string>('q', '')
   const sortBy = useRouteQuery<undefined | 'relevance' | 'published'>('sortBy', 'relevance')
   const filters = useRouteQuery<string>('filters', '')
   const results = ref<Results | null>(null)

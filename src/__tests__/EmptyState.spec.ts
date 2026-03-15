@@ -58,9 +58,11 @@ describe('EmptyState', () => {
     const pinia = createPinia()
     setActivePinia(pinia)
     const store = useSearchStore()
-    store.searchQuery = ''
-    store.loading = false
-    store.results = null
+    store.$patch({
+      searchQuery: '',
+      loading: false,
+      results: null,
+    })
 
     const wrapper = mount(EmptyState, {
       global: { plugins: [pinia] },
@@ -74,13 +76,15 @@ describe('EmptyState', () => {
     const pinia = createPinia()
     setActivePinia(pinia)
     const store = useSearchStore()
-    store.searchQuery = 'climate'
-    store.loading = false
-    store.results = {
-      total: 0,
-      facets: [],
-      items: [],
-    }
+    store.$patch({
+      searchQuery: 'climate',
+      loading: false,
+      results: {
+        total: 0,
+        facets: [],
+        items: [],
+      },
+    })
 
     const wrapper = mount(EmptyState, {
       global: { plugins: [pinia] },

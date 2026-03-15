@@ -8,7 +8,11 @@ import { useSearchStore } from '@/store/useSearchStore'
 const queryState = new Map<string, ReturnType<typeof ref>>()
 
 vi.mock('@vueuse/router', () => ({
-  useRouteQuery: (key: string, defaultValue: unknown, options?: { transform?: (v: unknown) => unknown }) => {
+  useRouteQuery: (
+    key: string,
+    defaultValue: unknown,
+    options?: { transform?: (v: unknown) => unknown },
+  ) => {
     if (!queryState.has(key)) {
       const initial = options?.transform ? options.transform(defaultValue) : defaultValue
       queryState.set(key, ref(initial))
@@ -70,7 +74,7 @@ describe('SortControl', () => {
     })
 
     const buttons = wrapper.findAll('button')
-    await buttons[1].trigger('click')
+    await buttons[1]?.trigger('click')
 
     expect(store.sortBy).toBe('published')
   })

@@ -1,4 +1,4 @@
-import { parseFiltersString, isCanceledError } from '@/lib/utils'
+import { parseFiltersString, isCanceledError, replaceHyphensWithSpaces } from '@/lib/utils'
 import { searchWorks } from '@/services/api'
 import type { Facet, Results, SearchParams } from '@/types'
 import { defineStore } from 'pinia'
@@ -155,7 +155,7 @@ export const useSearchStore = defineStore('search', () => {
             published: item.published?.['date-parts'][0],
             publisher: item.publisher,
             abstract: item.abstract,
-            type: item.type,
+            type: replaceHyphensWithSpaces(item.type),
             authors: item.author,
           })),
         }

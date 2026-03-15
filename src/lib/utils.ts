@@ -52,3 +52,7 @@ export function parseFiltersString(input: string): { pubTypes: string[]; pubYear
 
   return { pubTypes, pubYears }
 }
+
+export function replaceHyphensWithSpaces(value: string) {
+  return value.replace(/-/g, ' ')
+}

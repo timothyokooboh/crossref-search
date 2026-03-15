@@ -15,13 +15,17 @@ export const useSearchStore = defineStore('search', () => {
   const filters = useRouteQuery<string>('filters', '')
   const results = ref<Results | null>(null)
   const formattedFacets = ref<Facet[]>([])
+  // Track the query that last produced a full facet list to avoid stale facets across searches.
   const lastFacetQuery = ref<string | null>(null)
   const DEBOUNCE_DELAY = 1200
   const ROWS = 10
 
   const offset = computed(() => (currentPage.value - 1) * ROWS)
+
   const selectedPublicationTypes = computed(() => parseFiltersString(filters.value).pubTypes)
+
   const selectedPublicationYears = computed(() => parseFiltersString(filters.value).pubYears)
+
   const hasSelectedFacets = computed(() => {
     return selectedPublicationTypes.value.length > 0 || selectedPublicationYears.value.length > 0
   })
@@ -35,6 +39,12 @@ export const useSearchStore = defineStore('search', () => {
     )
   })
 
+  const resetResults = () => {
+    results.value = null
+    formattedFacets.value = []
+  }
+
+  // When filters are active, only update counts for selected facets to preserve the full list.
   const updateSelectedFacetCounts = (
     facetIndex: number,
     selectedKeys: string[],
@@ -150,14 +160,14 @@ export const useSearchStore = defineStore('search', () => {
           })),
         }
       } else {
-        results.value = null
+        resetResults()
       }
     } catch (err) {
       if (isCanceledError(err) && (err.name === 'CanceledError' || err.code === 'ERR_CANCELED')) {
         return
       }
 
-      results.value = null
+      resetResults()
       toast.error('Error', {
         description: 'Unable to fetch data, please try again',
         position: 'top-right',

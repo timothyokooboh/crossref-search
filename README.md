@@ -35,17 +35,9 @@ pnpm exec playwright show-report
 
 ## Notes on Implementation
 
-### Facet UX Tradeoff
+### Facet Behavior
 
-The Crossref API returns a reduced facet list when filters are applied (e.g., selecting `Book` returns only that facet). Replacing the entire facet list in the UI causes a jarring experience, because users lose access to other facets without clearing filters.
-
-To improve UX:
-
-- The app **keeps the full facet list** from the last unfiltered query.
-- When filters are applied, it **updates counts only for the selected facets**, leaving the rest visible.
-- If the **query changes**, facets are **fully replaced** to avoid stale facet lists across searches.
-
-This preserves a stable facet UI while still reflecting the filtered response where it matters most.
+The Crossref API returns a reduced facet list when filters are applied (e.g., selecting `Book` returns only that facet). To prioritize correctness and avoid stale facet state, the UI **always replaces** the facet list with the latest response, even when filters are active.
 
 ### Deep Linking
 
